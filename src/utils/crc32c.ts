@@ -15,8 +15,10 @@ export function crc32c(source: Buffer) {
     }
     crc = crc ^ 0xffffffff;
 
+    const [ uint32 ] = new Uint32Array([ crc ])
+
     // Convert endianness
     let res = Buffer.alloc(4);
-    res.writeInt32LE(crc);
+    res.writeUInt32LE(uint32);
     return res;
 }
