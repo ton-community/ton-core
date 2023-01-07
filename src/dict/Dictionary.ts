@@ -156,6 +156,15 @@ export class Dictionary<K extends DictionaryKeyTypes, V> {
         },
 
         /**
+         * Create standard slice value. On serialization instead of writing cell as ref, copies it to destination
+         * @returns DictionaryValue<Slice>
+         */
+        Slice: () => {
+            return createSliceValue();
+        },
+
+
+        /**
          * Create Builder value
          * @param bytes number of bytes of a buffer
          * @returns DictionaryValue<Builder>
@@ -559,6 +568,17 @@ function createCellValue(): DictionaryValue<Cell> {
         },
         parse: (src) => {
             return src.loadRef();
+        }
+    }
+}
+
+function createSliceValue(): DictionaryValue<Slice> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeSlice(src);
+        },
+        parse: (src) => {
+            return src;
         }
     }
 }
